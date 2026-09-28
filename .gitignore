@@ -67,3 +67,8 @@ firmware/**/*.uvopt
 Thumbs.db
 *.log
 *.swp
+
+# Media
+*.mp4
+*.mov
+*.avi
