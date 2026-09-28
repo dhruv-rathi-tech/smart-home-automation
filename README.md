@@ -6,9 +6,11 @@ The Flutter app sends short ASCII commands over Bluetooth using interactive dash
 
 ## Hardware Implementation
 
-![Complete Hardware Implementation](hardware/implementation.jpeg)
-
-*Complete breadboard prototype setup featuring the AT89S52 8051 microcontroller, HC-05 Bluetooth module, 3x LEDs (room lights), relay module (DC fan), and SG90 servo motor (door).*
+<p align="center">
+  <img src="hardware/implementation.jpeg" alt="Complete Hardware Implementation" width="600" />
+  <br>
+  <em>Complete breadboard prototype setup featuring the AT89S52 8051 microcontroller, HC-05 Bluetooth module, 3x LEDs (room lights), relay module (DC fan), and SG90 servo motor (door).</em>
+</p>
 
 ## Architecture
 
