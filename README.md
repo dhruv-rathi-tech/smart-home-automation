@@ -2,7 +2,7 @@
 
 A Bluetooth-based smart home automation project combining an **8051 microcontroller**, **HC-05 Bluetooth module**, and a **Flutter Android application**.
 
-The Flutter app sends short ASCII commands over Bluetooth. The HC-05 forwards those bytes over UART to the 8051, which controls three LEDs, a relay, and a servo motor.
+The Flutter app sends short ASCII commands over Bluetooth using interactive dashboard controls and **built-in voice commands**. The HC-05 forwards those bytes over UART to the 8051, which controls three LEDs (room lights), a relay module (DC fan), and a servo motor (door/gate).
 
 ## Demonstration
 
@@ -12,6 +12,7 @@ https://github.com/user-attachments/assets/72f2cd24-27c8-42e4-bc4e-239b8bce3424
 
 ```text
 Flutter Android App
+(UI Dashboard & Voice Commands)
         |
         | Bluetooth Classic / RFCOMM
         v
@@ -20,8 +21,9 @@ Flutter Android App
         | UART 9600, 8N1
         v
     AT89S52 / 8051
-    |      |       |
-  LEDs   Relay    Servo
+    |       |        |
+  LEDs    Relay    Servo
+(Lights)  (Fan)    (Door)
 ```
 
 ## Repository layout
@@ -47,40 +49,54 @@ smart-home-automation/
 
 | Component | Purpose |
 |---|---|
-| AT89S52 / compatible 8051 | Main controller |
+| AT89S52 / compatible 8051 | Main microcontroller |
 | HC-05 | Bluetooth Classic serial link |
-| 3 LEDs | Light outputs |
-| Relay module | Appliance/fan switching |
-| Servo motor | Position control |
-| 11.0592 MHz crystal | UART timing |
+| 3 LEDs | Digital light outputs (Room lights) |
+| Relay module | DC Motor / Fan switching |
+| Servo motor (SG90) | Position control (Door / Gate) |
+| 11.0592 MHz crystal | UART timing (9600 baud) |
 
 ### Firmware pin map
 
-| Pin | Function |
-|---|---|
-| P2.1 | LED 1 |
-| P2.4 | LED 2 |
-| P2.7 | LED 3 |
-| P1.0 | Relay |
-| P1.6 | Servo |
-| RXD/TXD | HC-05 UART |
+| Pin | Function | Controlled Appliance |
+|---|---|---|
+| P2.1 | LED 1 | Light 1 |
+| P2.4 | LED 2 | Light 2 |
+| P2.7 | LED 3 | Light 3 |
+| P1.0 | Relay | DC Fan / Appliance |
+| P1.6 | Servo | Door / Gate (0° = closed, 90° = open) |
+| RXD/TXD | HC-05 UART | Bluetooth serial link |
 
 **Hardware safety:** use an appropriate relay module/driver and isolation for mains-powered loads. Do not connect mains voltage directly to the 8051 or breadboard.
 
 ## Command protocol
 
-| Byte | Action |
-|---|---|
-| `1` | Toggle LED 1 |
-| `2` | Toggle LED 2 |
-| `3` | Toggle LED 3 |
-| `R` | Toggle relay |
-| `0` | Servo 0° |
-| `9` | Servo 90° |
-| `A` | Increase servo position |
-| `B` | Decrease servo position |
+| Byte | Action | Target Appliance |
+|---|---|---|
+| `1` | Toggle LED 1 | Light 1 |
+| `2` | Toggle LED 2 | Light 2 |
+| `3` | Toggle LED 3 | Light 3 |
+| `R` | Toggle relay | DC Fan |
+| `0` | Servo 0° | Door Closed |
+| `9` | Servo 90° | Door Open |
+| `A` | Increase servo position | Door Step Open |
+| `B` | Decrease servo position | Door Step Close |
 
-The firmware sends status strings ending in CR/LF. The Flutter app displays received status messages.
+The firmware sends status strings ending in CR/LF. The Flutter app displays received status messages in the real-time activity log.
+
+### Voice control commands
+
+The Flutter application incorporates speech recognition (`speech_to_text`), allowing hands-free voice automation:
+
+| Voice Command Phrase | Action Triggered | Serial Command |
+|---|---|---|
+| *"Light 1 on"* / *"Light 1 off"* | Toggle Light 1 | `1` |
+| *"Light 2 on"* / *"Light 2 off"* | Toggle Light 2 | `2` |
+| *"Light 3 on"* / *"Light 3 off"* | Toggle Light 3 | `3` |
+| *"Fan on"* / *"Fan off"* / *"Turn on fan"* | Toggle DC Fan / Relay | `R` |
+| *"Servo 0"* / *"Servo off"* | Close Door (Servo 0°) | `0` |
+| *"Servo 90"* / *"Servo ninety"* | Open Door (Servo 90°) | `9` |
+| *"All on"* / *"All off"* | Master toggle for all appliances | Sequential |
 
 ## Run the Flutter app
 
