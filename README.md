@@ -4,9 +4,11 @@ A Bluetooth-based smart home automation project combining an **8051 microcontrol
 
 The Flutter app sends short ASCII commands over Bluetooth using interactive dashboard controls and **built-in voice commands**. The HC-05 forwards those bytes over UART to the 8051, which controls three LEDs (room lights), a relay module (DC fan), and a servo motor (door/gate).
 
-## Demonstration
+## Hardware Implementation
 
-https://github.com/user-attachments/assets/72f2cd24-27c8-42e4-bc4e-239b8bce3424
+![Complete Hardware Implementation](hardware/implementation.jpeg)
+
+*Complete breadboard prototype setup featuring the AT89S52 8051 microcontroller, HC-05 Bluetooth module, 3x LEDs (room lights), relay module (DC fan), and SG90 servo motor (door).*
 
 ## Architecture
 

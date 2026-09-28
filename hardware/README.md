@@ -1,5 +1,5 @@
 # Hardware
 
-Place optional circuit diagrams, Proteus files, PCB files, and hardware photographs here.
+This directory contains circuit documents, schematics, and prototype implementation photographs:
 
-Generated binaries and large build outputs should not be committed; see the root `.gitignore`.
+- **`implementation.jpeg`**: Photograph of the complete breadboard hardware implementation, featuring the AT89S52 microcontroller, HC-05 Bluetooth module, 3x LEDs (lights), relay module (DC fan), and SG90 servo motor (door).
